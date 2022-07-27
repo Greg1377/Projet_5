@@ -6,4 +6,9 @@ console.log("j'ai récupérer l'id suivant: " + idProduct);
 async function getProduct(){
     let getProduct = await fecht('http://localhost:3000/api/products');
     return product.json();
-};
+}
+
+async function information(){
+    for (let item in information)
+    document.querySelector("#items").innerHTML += showItems(information[item])
+    }
