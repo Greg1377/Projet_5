@@ -1,13 +1,29 @@
-// Création du htlm à inséret dans le DOM pour chaque produit
+// Variable contenant l'adresse de l'API
 
-function showItems (e){
-    return
-    <a href="./product.html?id=$(e._id)">
+const ShowItemsApi = "http://localhost:3000/api/products";
 
+// Requête API
+
+fetch(ShowItemsApi)
+  .then((reponse) => {
+    return reponse.json();
+  })
+
+  .then((products) => {
+    console.log(products);
+
+    for (donner of products) {
+      console.log(donner);
+      document.getElementById(
+        "items"
+      ).innerHTML += `<a href="./product.html?id=${donner._id}">
     <article>
-         <img src="${e.imageUrl}"{e.altTex}>
-         <h1 class="productTitle">${e.title}<h1>
-         <P class="productDescription">${e.description}<p>
-         </article>
-         </a>;
-}
+    <img   
+        src="${donner.imageUrl}"
+         alt="${donner.altTxt}"/>
+          <h3 class="productName">${donner.name}</h3>
+                <p class="productDescription"> ${donner.description}</p>
+             </article>
+         </a>`;
+    }
+  });
