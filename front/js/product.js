@@ -70,40 +70,32 @@ function getProductForCart(product) {
     const colorChoice = document.querySelector("#colors");
     const productQuantity = document.querySelector("#quantity");
 
-    document.querySelector("#addToCart").addEventListener("click", function() {
+    addBtn.addEventListener("click", function() {
         const myProduct = {
-            Name: '${product.name}',
-            ID: '${product._id}',
-            image: '${product.imageUrl}',
-            alt: '${product.altText}',
-            Price: '${product.price}',
-            Color: document.querySelector("colors").value,
-            Quantity: parseInt(productQuantity.value)
+
         };
         // Permet de controler qu'une quantité et une couleur sont bien sélectionnées
-        if (document.querySelector("#colors").value == "" || document.querySelector("#quantity").value <= 0 || document.querySelector("#quantity").value > 100) {
-            let warning = alert("Merci d'indiquer une couleur et une quantité comprise entre 1 et 100")
-            return;
-        }
+        if (productQuantity.value !== 0 && colorChoice.value !== "") {
 
-        let cartSaved = JSON.parse(localStorage.getItem("myCart"));
-        if (cartSaved) {
+            let cartSaved = JSON.parse(localStorage.getItem("myCart"));
+            if (cartSaved) {
 
-            // Permet de controler l'existence du produit dans le panier (même ID et même couleur)
-            const productControl = cartSaved.find(sofa => sofa.ID == product._id && sofa.Color == colorChoice.value)
-            if (productControl) {
-                let finalQauntity = myProduct.Quantity + productControl.Quantity;
-                productControl.Quantity = finalQauntity;
-                saveCart(cartSaved)
+                // Permet de controler l'existence du produit dans le panier (même ID et même couleur)
+                const productControl = cartSaved.find(sofa => sofa.ID == product._id && sofa.Color == colorChoice.value)
+                if (productControl) {
+                    let finalQauntity = myProduct.Quantity + productControl.Quantity;
+                    productControl.Quantity = finalQauntity;
+                    saveCart(cartSaved)
+                } else {
+                    cartSaved.push(myProduct);
+                    saveCart(cartSaved);
+                }
             } else {
+                cartSaved = [];
                 cartSaved.push(myProduct);
                 saveCart(cartSaved);
             }
-        } else {
-            cartSaved = [];
-            cartSaved.push(myProduct);
-            saveCart(cartSaved);
+            alert("le produit a été ajouté au panier")
         }
-        alert("le produit a été ajouté au panier")
     })
 }
