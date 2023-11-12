@@ -4,7 +4,7 @@ const cart = JSON.parse(localStorage.getItem("myCart")) || [];
 // Affichage du panier sur la page
 function displayCart() {
   // Récupération du conteneur du panier dans le HTML
-  const cartContainer = document.getElementById("cartItems");
+  const cartContainer = document.getElementById("cart__items");
 
   // Vider le contenu du conteneur du panier
   cartContainer.innerHTML = "";
