@@ -18,14 +18,18 @@ function displayCart() {
     // Affichage des informations du produit dans l'élément div
     cartItem.innerHTML = `
       <div class="cart-item__info">
-        <h3>${product.name}</h3>
-        <p>Couleur: ${product.color}</p>
-        <p>Quantité: ${product.quantity}</p>
-      </div>
-      <div class="cart-item__price">
-        <p>${product.price}€</p>
-      </div>
-    `;
+          <h3>${product.name}</h3>
+          <p>Couleur: ${product.Color}</p>
+          <p>Quantité: ${product.Quantity}</p>
+        </div>
+        <div class="cart-item_img">
+        <img src="${product.imageUrl}" alt="Image du produit"style="width: 50%;">
+        </div>
+
+        <div class="cart-item__price">
+          <p>${product.price}€</p>
+        </div>
+      `;
 
     // Ajout de l'élément div représentant le produit au conteneur du panier
     cartContainer.appendChild(cartItem);
@@ -33,16 +37,17 @@ function displayCart() {
 
   // Affichage du total du panier
   const total = calculateTotal(cart);
-  const totalContainer = document.getElementById("cartTotal");
+  const totalContainer = document.getElementById("totalPrice");
   totalContainer.innerHTML = `<p>Total: ${total}€</p>`;
 }
 
-// Fonction pour calculer le total du panier (à adapter selon votre structure de données)
+// Fonction pour calculer le total du panier
 function calculateTotal(cart) {
   let total = 0;
   for (const product of cart) {
-    total += product.price * product.quantity;
+    total += product.price * product.Quantity;
   }
+
   return total;
 }
 
