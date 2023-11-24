@@ -5,16 +5,24 @@ let idItem = url.searchParams.get("id");
 
 console.log("J'ai récupéré l'id suivant : " + idItem);
 
+// Gestion des erreurs de requête API
+function handleApiResponse(response) {
+  if (!response.ok) {
+    throw new Error(`Erreur de requête API: ${response.statusText}`);
+  }
+  return response.json();
+}
+
 function getItem() {
-    // Récupération des données de l'API (création Product)
-    fetch("http://localhost:3000/api/products/" + idItem)
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            showItem(data);
-            getProductForCart(data);
-        });
+  // Récupération des données de l'API (création Product)
+  fetch("http://localhost:3000/api/products/" + idItem)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      showItem(data);
+      getProductForCart(data);
+    });
 }
 
 // Permet d'afficher les caractéristiques du produit
@@ -71,7 +79,8 @@ function getProductForCart(product) {
         const myProduct = {
             ID: product._id,
             name: product.name,
-             price: product.price,
+            price: parseFloat(product.price),
+            pricePerUnit: parseFloat(product.price),
             Quantity: parseInt(productQuantity.value),
             Color: colorChoice.value,
             imageUrl:product.imageUrl
