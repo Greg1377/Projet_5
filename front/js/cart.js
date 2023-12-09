@@ -1,7 +1,7 @@
-// Récupération du panier depuis le localStorage
+// Récupération du panier depuis le stockage local
 let cart = JSON.parse(localStorage.getItem("myCart")) || [];
 
-// Déclaration des constantes en dehors de la fonction displayCart
+// Déclarations des constantes en dehors de la fonction displayCart
 const cartContainer = document.getElementById("cart__items");
 const totalItemsContainer = document.getElementById("totalQuantity");
 const totalPriceContainer = document.getElementById("totalPrice");
@@ -24,13 +24,14 @@ document.addEventListener("DOMContentLoaded", function () {
   displayCart(cart);
   updateTotalDisplay();
 
-  // Ajoutez des gestionnaires d'événements pour chaque champ de saisie
+  // Ajout des gestionnaires d'événements pour chaque champ de saisie du formulaire
   const firstNameInput = document.querySelector("#firstName");
   const lastNameInput = document.querySelector("#lastName");
   const addressInput = document.querySelector("#address");
   const cityInput = document.querySelector("#city");
   const emailInput = document.querySelector("#email");
 
+  // Fonction pour valider les champs du formulaire à chaque saisie
   function handleInputValidation(event, validationFunction) {
     const inputValue = event.target.value;
     if (validationFunction(inputValue)) {
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Ajout des gestionnaires d'événements pour chaque champ du formulaire
   firstNameInput.addEventListener("input", function (event) {
     handleInputValidation(event, validateFirstName);
   });
@@ -75,6 +77,8 @@ function displayErrorMessage(field, message) {
     errorElement.textContent = message;
   }
 }
+
+// Fonctions de validation du formulaire
 
 // Fonction pour valider le prénom
 function validateFirstName(firstName) {
@@ -145,11 +149,12 @@ function validateEmail(email) {
   return isValid;
 }
 
-// Fonction pour valider le formulaire
+// Fonction pour valider l'ensemble du formulaire
 function validateForm(firstName, lastName, address, city, email) {
   clearErrorMessages();
   let isValid = true;
 
+  // Vérifie chaque champ du formulaire
   if (!validateFirstName(firstName) || !validateLastName(lastName) || !validateAddress(address) || !validateCity(city) || !validateEmail(email)) {
     isValid = false;
   }
@@ -180,7 +185,7 @@ function removeProduct(productId) {
   saveCart(cart);
 }
 
-// Fonction pour sauvegarder le panier dans le localStorage et sérialiser la variable
+// Fonction pour sauvegarder le panier dans le stockage local
 function saveCart(cart) {
   localStorage.setItem("myCart", JSON.stringify(cart));
 }
@@ -194,19 +199,23 @@ function displayCart(myCart) {
   const cartOrder = document.querySelector(".cart__order");
 
   if (myCart.length === 0) {
+    // Affiche un message si le panier est vide
     const emptyCartMessage = document.createElement("p");
     emptyCartMessage.textContent = "Votre panier est vide.";
     cartContainer.appendChild(emptyCartMessage);
     cartOrder.style.display = "none";
   } else {
+    // Boucle à travers les produits du panier et les affiche
     for (const product of myCart) {
       const cartItem = document.createElement("article");
       cartItem.classList.add("cart__item");
       cartItem.setAttribute("data-id", product.ID);
 
+      // Met à jour le totalItems et totalAmount
       totalItems += product.Quantity;
       totalAmount += product.price * product.Quantity;
 
+      // Crée la structure HTML pour chaque produit du panier
       cartItem.innerHTML = `
         <div class="cart__item__img">
           <img src="${product.imageUrl}" alt="Photographie d'un produit">
@@ -228,10 +237,12 @@ function displayCart(myCart) {
         </div>
       `;
 
+      // Ajoute le produit au panier
       cartContainer.appendChild(cartItem);
     }
   }
 
+  // Met à jour l'affichage total
   updateTotalDisplay();
 }
 
@@ -285,17 +296,10 @@ function orderButtonClickHandler(event) {
         alert("Un problème a été rencontré lors de l'envoi du formulaire.");
       });
 
-    // Effacement du panier après la commande réussie
-    cart = [];
-    saveCart(cart);
-    displayCart(cart);
-    updateTotalDisplay();
-
     // Affichage de l'alerte de commande réussie
     alert("Commande validée !");
-  } else {
-    console.log('Formulaire invalide. Vérifiez les messages d\'erreur.');
-  }
+  } else ;
+
 }
 
 // Gestionnaire d'événement pour le changement de quantité
