@@ -239,15 +239,51 @@ function displayCart(myCart) {
 function orderButtonClickHandler(event) {
   event.preventDefault();
 
+  // Récupération des données du formulaire
   const firstName = document.querySelector("#firstName").value;
   const lastName = document.querySelector("#lastName").value;
   const address = document.querySelector("#address").value;
   const city = document.querySelector("#city").value;
   const email = document.querySelector("#email").value;
 
+  // Validation du formulaire
   if (validateForm(firstName, lastName, address, city, email)) {
-    // En cas de succès de la validation, effectuez les actions nécessaires
+    // Création d'un tableau contenant les ID des produits du panier
+    const productIds = cart.map(product => product.ID);
 
+    // Préparation des données à envoyer dans la requête
+    const requestData = {
+      contact: {
+        firstName: firstName,
+        lastName: lastName,
+        address: address,
+        city: city,
+        email: email
+      },
+      products: productIds
+    };
+
+    // Configuration des options pour la requête fetch
+    const options = {
+      method: 'POST', // ou 'PUT' si votre API requiert une méthode HTTP différente
+      headers: {
+        'Content-Type': 'application/json'
+        // Ajoutez d'autres en-têtes si votre API les requiert
+      },
+      body: JSON.stringify(requestData)
+    };
+
+    // Appel de l'API
+    fetch("http://localhost:3000/api/products/order", options)
+      .then(response => response.json())
+      .then(data => {
+        // Redirection vers la page de confirmation avec l'orderId dans l'URL
+        document.location.href = `confirmation.html?orderId=${data.orderId}`;
+      })
+      .catch(err => {
+        console.log("Erreur Fetch product.js", err);
+        alert("Un problème a été rencontré lors de l'envoi du formulaire.");
+      });
 
     // Effacement du panier après la commande réussie
     cart = [];
@@ -256,7 +292,7 @@ function orderButtonClickHandler(event) {
     updateTotalDisplay();
 
     // Affichage de l'alerte de commande réussie
-    alert("VOTRE COMMANDE A BIEN été effectuée !");
+    alert("Commande validée !");
   } else {
     console.log('Formulaire invalide. Vérifiez les messages d\'erreur.');
   }
