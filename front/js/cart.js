@@ -323,3 +323,4 @@ function deleteItemClickHandler(event) {
     updateTotalDisplay();
   }
 }
+//fin de ma page panier
